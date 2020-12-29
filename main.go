@@ -21,7 +21,7 @@ func main(){
 
 	if *nickNamePtr == ""{
 		fmt.Println("Type 'exit' or 'quit' to exit the application.")
-		fmt.Print("Type in the nickname you're looking for:")
+		fmt.Println("Type in the nickname you're looking for:")
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan(){
 			if scanner.Text() == "quit" || scanner.Text() == "exit"{
@@ -32,7 +32,7 @@ func main(){
 			for i := range c {
 				fmt.Println(i)
 			}
-			fmt.Print("Type in the nickname you're looking for: ")
+			fmt.Println("Type in the nickname you're looking for:")
 		}
 	} else {
 		if results := fuzzy.FindFrom(*nickNamePtr, &players); results != nil {
