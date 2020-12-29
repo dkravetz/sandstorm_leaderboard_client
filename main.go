@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-func main(){
+func main() {
 	nickNamePtr := flag.String("Nickname", "", "Steam nickname to search")
 	flag.Parse()
 
@@ -25,12 +25,12 @@ func main(){
 		os.Exit(1)
 	}
 
-	if *nickNamePtr == ""{
+	if *nickNamePtr == "" {
 		fmt.Println("Type 'exit' or 'quit' to exit the application.")
 		fmt.Println("Type in the nickname you're looking for:")
 		scanner := bufio.NewScanner(os.Stdin)
-		for scanner.Scan(){
-			if scanner.Text() == "quit" || scanner.Text() == "exit"{
+		for scanner.Scan() {
+			if scanner.Text() == "quit" || scanner.Text() == "exit" {
 				os.Exit(0)
 			}
 			c := make(chan string)
@@ -51,8 +51,7 @@ func main(){
 	}
 }
 
-
-func searchPlayers(players *Players, query string, c chan string){
+func searchPlayers(players *Players, query string, c chan string) {
 	if results := fuzzy.FindFrom(query, players); results != nil {
 		for _, item := range results {
 			c <- fmt.Sprintf("%s", (*players)[item.Index])

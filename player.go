@@ -2,15 +2,17 @@ package main
 
 import "fmt"
 
-type Player struct{
-	Rank int `json:"rank"`
-	SteamId string `json:"steam_id"`
-	PlayerAlias string `json:"player_alias"`
-	Tier string `json:"tier"`
-	DivisionText string `json:"division_text"`
-	PlacementsLeft int `json:"placements_left"`
+// Player is the struct holding all the relevant information about Sandstorm's leaderboards
+type Player struct {
+	Rank           int    `json:"rank"`
+	SteamID        string `json:"steam_id"`
+	PlayerAlias    string `json:"player_alias"`
+	Tier           string `json:"tier"`
+	DivisionText   string `json:"division_text"`
+	PlacementsLeft int    `json:"placements_left"`
 }
 
+// Players is a slice of Player
 type Players []Player
 
 func (p Player) String() string {

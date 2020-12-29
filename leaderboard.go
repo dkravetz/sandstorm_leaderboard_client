@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// GetPlayers fetches all players concurrently from NWIs endpoint and appends them to allPlayers
 func GetPlayers(allPlayers *Players, wg *sync.WaitGroup) error {
 	totalPlayerCount := 50000
 	client := http.Client{Timeout: 10 * time.Second}
