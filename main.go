@@ -2,14 +2,12 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/sahilm/fuzzy"
 	"log"
-	"net/http"
 	"os"
-	"time"
+	"sync"
 )
 
 func main(){
@@ -17,7 +15,15 @@ func main(){
 	flag.Parse()
 
 	var players Players
-	GetPlayers("https://leaderboard.sandstorm.game/api/v0/Players/getrankedplayers", &players)
+	var wg sync.WaitGroup
+	fmt.Println("Loading player list, please wait...")
+	err := GetPlayers(&players, &wg)
+	wg.Wait()
+	fmt.Println("Player list loaded.")
+	if err != nil {
+		log.Fatal(err)
+		os.Exit(1)
+	}
 
 	if *nickNamePtr == ""{
 		fmt.Println("Type 'exit' or 'quit' to exit the application.")
@@ -45,24 +51,6 @@ func main(){
 	}
 }
 
-func GetPlayers(url string, players interface{})  error{
-	client := http.Client{Timeout: 10 * time.Second}
-	res, err := client.Get(url)
-	if err != nil {
-		log.Fatal("Couldn't request URL. ", err)
-		return err
-	}
-	defer res.Body.Close()
-	if res.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
-		return err
-	}
-	err = json.NewDecoder(res.Body).Decode(&players)
-	if err != nil{
-		return err
-	}
-	return nil
-}
 
 func searchPlayers(players *Players, query string, c chan string){
 	if results := fuzzy.FindFrom(query, players); results != nil {
